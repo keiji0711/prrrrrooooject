@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}Attendance - Instructor{% endblock %}
+
+{% block content %}
+
+<div class="bg-white p-6 rounded shadow max-w-full">
+  <h2 class="text-2xl font-semibold mb-2">Attendance</h2>
+  <p class="text-gray-600 mb-6">Mark and monitor student attendance for today's session.</p>
+
+  <div class="flex justify-between items-center mb-4">
+    <input 
+      id="searchInput"
+      type="text" 
+      placeholder="Search students..." 
+      class="border border-gray-300 rounded px-3 py-2 w-1/3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      onkeyup="filterStudents()" />
+
+    <button 
+      onclick="markAttendance()" 
+      class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded shadow">
+      Mark Attendance
+    </button>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full table-auto border-collapse border border-gray-200">
+      <thead class="bg-blue-800">
+        <tr class="text-white">
+          <th class="border border-gray-300 px-4 py-2 text-left">#</th>
+          <th class="border border-gray-300 px-4 py-2 text-left">Student Name</th>
+          <th class="border border-gray-300 px-4 py-2 text-left">Year Level</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Present</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Absent</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Excused</th>
+        </tr>
+      </thead>
+      <tbody id="studentsTableBody" class="divide-y divide-gray-200">
+        <tr>
+          <td class="border border-gray-300 px-4 py-2">1</td>
+          <td onclick="showStats('Juan Dela Cruz')" class="border border-gray-300 px-4 py-2 text-blue-600 hover:underline cursor-pointer">Juan Dela Cruz</td>
+          <td class="border border-gray-300 px-4 py-2">Grade 10</td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-1" value="present" class="cursor-pointer" />
+          </td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-1" value="absent" class="cursor-pointer" />
+          </td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-1" value="excused" class="cursor-pointer" />
+          </td>
+        </tr>
+        <tr>
+          <td class="border border-gray-300 px-4 py-2">2</td>
+          <td onclick="showStats('Maria Santos')" class="border border-gray-300 px-4 py-2 text-blue-600 hover:underline cursor-pointer">Maria Santos</td>
+          <td class="border border-gray-300 px-4 py-2">Grade 10</td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-2" value="present" class="cursor-pointer" />
+          </td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-2" value="absent" class="cursor-pointer" />
+          </td>
+          <td class="border border-gray-300 px-4 py-2 text-center">
+            <input type="radio" name="attendance-2" value="excused" class="cursor-pointer" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modern Modal -->
+<div id="statsModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 transform transition-all scale-95" id="modalBox">
+    <div class="flex justify-between items-center border-b pb-3 mb-4">
+      <h3 id="modalStudentName" class="text-xl font-semibold text-gray-800">Student Stats</h3>
+      <button onclick="closeModal()" class="text-gray-500 hover:text-red-600 transition duration-200">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+          stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <ul class="text-gray-700 space-y-3 text-base">
+      <li class="flex justify-between">
+        <span><strong>Present:</strong></span>
+        <span id="statPresent">0</span>
+      </li>
+      <li class="flex justify-between">
+        <span><strong>Absent:</strong></span>
+        <span id="statAbsent">0</span>
+      </li>
+      <li class="flex justify-between">
+        <span><strong>Excused:</strong></span>
+        <span id="statExcused">0</span>
+      </li>
+    </ul>
+
+    <div class="mt-6 flex justify-end">
+      <button onclick="closeModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-sm">
+        Close
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+  function filterStudents() {
+    const input = document.getElementById('searchInput').value.toLowerCase();
+    const rows = document.querySelectorAll('#studentsTableBody tr');
+    rows.forEach(row => {
+      const name = row.cells[1].textContent.toLowerCase();
+      row.style.display = name.includes(input) ? '' : 'none';
+    });
+  }
+
+  function markAttendance() {
+    alert('Attendance marked successfully!');
+  }
+
+  function showStats(name) {
+    const stats = {
+      "Juan Dela Cruz": { present: 18, absent: 2, excused: 1 },
+      "Maria Santos": { present: 20, absent: 0, excused: 1 }
+    };
+
+    const studentStats = stats[name] || { present: 0, absent: 0, excused: 0 };
+
+    document.getElementById('modalStudentName').textContent = name + "'s Stats";
+    document.getElementById('statPresent').textContent = studentStats.present;
+    document.getElementById('statAbsent').textContent = studentStats.absent;
+    document.getElementById('statExcused').textContent = studentStats.excused;
+
+    const modal = document.getElementById('statsModal');
+    const box = document.getElementById('modalBox');
+    modal.classList.remove('hidden');
+    setTimeout(() => box.classList.remove('scale-95'), 10);
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('statsModal');
+    const box = document.getElementById('modalBox');
+    box.classList.add('scale-95');
+    setTimeout(() => modal.classList.add('hidden'), 200);
+  }
+</script>
+
+{% endblock %}
+
+
+
+

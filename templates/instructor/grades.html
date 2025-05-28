@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+
+{% block title %}Grades - Instructor{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded shadow space-y-6 md:space-y-0 md:flex md:space-x-6">
+    <!-- Grade Form (Left) -->
+    <div class="w-full md:w-1/5 bg-white p-6 rounded shadow">
+      <h3 class="text-2xl font-semibold mb-4">Add / Edit Grade</h3>
+      <form id="gradeForm" class="space-y-4">
+        <input type="hidden" id="gradeIndex" />
+  
+        <div>
+          <label for="studentName" class="block text-gray-700">Student Name</label>
+          <input type="text" id="studentName" class="w-full border border-gray-300 rounded px-3 py-2" required />
+        </div>
+  
+        <div>
+          <label for="yearLevel" class="block text-gray-700">Year Level</label>
+          <input type="text" id="yearLevel" class="w-full border border-gray-300 rounded px-3 py-2" required />
+        </div>
+  
+        <div>
+          <label for="subject" class="block text-gray-700">Subject</label>
+          <input type="text" id="subject" class="w-full border border-gray-300 rounded px-3 py-2" required />
+        </div>
+  
+        <div>
+          <label for="grade" class="block text-gray-700">Grade</label>
+          <input type="text" id="grade" class="w-full border border-gray-300 rounded px-3 py-2" required />
+        </div>
+  
+        <div class="flex space-x-3">
+          <button type="button" id="resetBtn" class="px-4 py-2 border border-gray-300 rounded hover:bg-gray-100">
+            Cancel
+          </button>
+          <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- Grades Table (Right) -->
+    <div class="w-full md:w-4/5 bg-white p-6 rounded shadow overflow-x-auto">
+      <h2 class="text-2xl font-bold mb-4">Grades Table</h2>
+      <table class="min-w-full border border-gray-300 rounded overflow-hidden">
+        <thead class="bg-blue-800">
+          <tr class="text-white">
+            <th class="text-left px-4 py-2 border-b">Student Name</th>
+            <th class="text-left px-4 py-2 border-b">Year Level</th>
+            <th class="text-left px-4 py-2 border-b">Subject</th>
+            <th class="text-left px-4 py-2 border-b">Grade</th>
+            <th class="text-left px-4 py-2 border-b">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="gradesTableBody">
+          <tr>
+            <td class="text-left px-4 py-2 border-b">Dexter James Degayo</td>
+            <td class="text-left px-4 py-2 border-b">3rd</td>
+            <td class="text-left px-4 py-2 border-b">Computer Programming</td>
+            <td class="text-left px-4 py-2 border-b">1.75</td>
+            <td class="text-left px-4 py-2 border-b space-x-2">
+              <!-- Update Icon -->
+              <a href="#" class="text-blue-600 hover:text-blue-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
+                  <path fill-rule="evenodd" d="M4 16a2 2 0 002 2h8a2 2 0 002-2v-5.586l-2 2V16H6v-6h2.586l2-2H6a2 2 0 00-2 2v6z" clip-rule="evenodd" />
+                </svg>
+              </a>
+              <!-- Delete Icon -->
+              <a href="#" class="text-red-600 hover:text-red-800" onclick="return confirm('Are you sure you want to delete this grade?');">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2h1v10a2 2 0 002 2h6a2 2 0 002-2V6h1a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zm1 6a1 1 0 10-2 0v6a1 1 0 102 0V8zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V8z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td class="text-left px-4 py-2 border-b">Angel Mae Degayo</td>
+            <td class="text-left px-4 py-2 border-b">3rd</td>
+            <td class="text-left px-4 py-2 border-b">Computer Programming</td>
+            <td class="text-left px-4 py-2 border-b">1.50</td>
+            <td class="text-left px-4 py-2 border-b space-x-2">
+              <!-- Update Icon -->
+              <a href="#" class="text-blue-600 hover:text-blue-800">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path d="M17.414 2.586a2 2 0 00-2.828 0L6 11.172V14h2.828l8.586-8.586a2 2 0 000-2.828z" />
+                  <path fill-rule="evenodd" d="M4 16a2 2 0 002 2h8a2 2 0 002-2v-5.586l-2 2V16H6v-6h2.586l2-2H6a2 2 0 00-2 2v6z" clip-rule="evenodd" />
+                </svg>
+              </a>
+              <!-- Delete Icon -->
+              <a href="#" class="text-red-600 hover:text-red-800" onclick="return confirm('Are you sure you want to delete this grade?');">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" viewBox="0 0 20 20" fill="currentColor">
+                  <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2h1v10a2 2 0 002 2h6a2 2 0 002-2V6h1a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zm1 6a1 1 0 10-2 0v6a1 1 0 102 0V8zm4 0a1 1 0 10-2 0v6a1 1 0 102 0V8z" clip-rule="evenodd" />
+                </svg>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+    </div>
+  </div>
+
+  {% endblock %}
+  
+  
+  
+  <script>
+    const grades = [
+      { studentName: 'Alice Johnson', yearLevel: 'Grade 10', subject: 'Math', grade: 'A' },
+      { studentName: 'Bob Smith', yearLevel: 'Grade 9', subject: 'Science', grade: 'B+' },
+    ];
+  
+    const gradesTableBody = document.getElementById('gradesTableBody');
+    const gradeForm = document.getElementById('gradeForm');
+    const gradeIndexInput = document.getElementById('gradeIndex');
+    const studentNameInput = document.getElementById('studentName');
+    const yearLevelInput = document.getElementById('yearLevel');
+    const subjectInput = document.getElementById('subject');
+    const gradeInput = document.getElementById('grade');
+    const resetBtn = document.getElementById('resetBtn');
+  
+    function renderGrades() {
+      gradesTableBody.innerHTML = '';
+      grades.forEach((grade, index) => {
+        const row = document.createElement('tr');
+        row.classList.add('border-b', 'hover:bg-gray-50');
+  
+        row.innerHTML = `
+          <td class="px-4 py-2">${grade.studentName}</td>
+          <td class="px-4 py-2">${grade.yearLevel}</td>
+          <td class="px-4 py-2">${grade.subject}</td>
+          <td class="px-4 py-2">${grade.grade}</td>
+          <td class="px-4 py-2 space-x-2">
+            <button onclick="editGrade(${index})" class="text-blue-600 hover:underline">Edit</button>
+            <button onclick="deleteGrade(${index})" class="text-red-600 hover:underline">Delete</button>
+          </td>
+        `;
+  
+        gradesTableBody.appendChild(row);
+      });
+    }
+  
+    function editGrade(index) {
+      const grade = grades[index];
+      gradeIndexInput.value = index;
+      studentNameInput.value = grade.studentName;
+      yearLevelInput.value = grade.yearLevel;
+      subjectInput.value = grade.subject;
+      gradeInput.value = grade.grade;
+    }
+  
+    function deleteGrade(index) {
+      if (confirm('Are you sure you want to delete this grade?')) {
+        grades.splice(index, 1);
+        renderGrades();
+        resetForm();
+      }
+    }
+  
+    function resetForm() {
+      gradeIndexInput.value = '';
+      studentNameInput.value = '';
+      yearLevelInput.value = '';
+      subjectInput.value = '';
+      gradeInput.value = '';
+    }
+  
+    gradeForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const index = gradeIndexInput.value;
+      const newGrade = {
+        studentName: studentNameInput.value.trim(),
+        yearLevel: yearLevelInput.value.trim(),
+        subject: subjectInput.value.trim(),
+        grade: gradeInput.value.trim()
+      };
+  
+      if (index === '') {
+        grades.push(newGrade);
+      } else {
+        grades[index] = newGrade;
+      }
+      renderGrades();
+      resetForm();
+    });
+  
+    resetBtn.addEventListener('click', resetForm);
+  
+    renderGrades();
+  </script>
+  
