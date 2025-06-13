@@ -1,0 +1,135 @@
+{% extends 'admin/adminBase.html' %}
+
+{% block title %}Manage Students{% endblock %}
+
+{% block header %}Manage Students{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-6">
+  <h3 class="text-xl font-semibold text-gray-700">Student List</h3>
+  <button onclick="toggleModal()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+    Add Student
+  </button>
+</div>
+
+<!-- Students Table -->
+<div class="bg-white p-4 rounded shadow overflow-x-auto">
+  <table class="min-w-full text-sm text-left text-gray-700 border border-gray-200">
+    <thead class="bg-gray-100 text-xs uppercase">
+      <tr>
+        <th class="px-4 py-2 border">First Name</th>
+        <th class="px-4 py-2 border">Last Name</th>
+        <th class="px-4 py-2 border">Middle Name</th>
+        <th class="px-4 py-2 border">Birthdate</th>
+        <th class="px-4 py-2 border">Gender</th>
+        <th class="px-4 py-2 border">LRN</th>
+        <th class="px-4 py-2 border">Address</th>
+        <th class="px-4 py-2 border">Contact</th>
+        <th class="px-4 py-2 border">Guardian</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Sample Data -->
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-2 border">Juan</td>
+        <td class="px-4 py-2 border">Dela Cruz</td>
+        <td class="px-4 py-2 border">Santos</td>
+        <td class="px-4 py-2 border">2008-05-14</td>
+        <td class="px-4 py-2 border">Male</td>
+        <td class="px-4 py-2 border">123456789012</td>
+        <td class="px-4 py-2 border">123 Mabini St., Manila</td>
+        <td class="px-4 py-2 border">09123456789</td>
+        <td class="px-4 py-2 border">Maria Dela Cruz</td>
+      </tr>
+      <tr class="hover:bg-gray-50">
+        <td class="px-4 py-2 border">Maria</td>
+        <td class="px-4 py-2 border">Lopez</td>
+        <td class="px-4 py-2 border">Garcia</td>
+        <td class="px-4 py-2 border">2009-08-21</td>
+        <td class="px-4 py-2 border">Female</td>
+        <td class="px-4 py-2 border">987654321098</td>
+        <td class="px-4 py-2 border">456 Bonifacio Ave., Quezon City</td>
+        <td class="px-4 py-2 border">09987654321</td>
+        <td class="px-4 py-2 border">Carlos Lopez</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Modal -->
+<div id="studentModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden z-50">
+  <div class="bg-white w-[90%] md:w-[75%] lg:w-[60%] rounded-lg shadow-lg p-6 relative">
+    <h2 class="text-xl font-bold mb-4 text-gray-800">Add Student</h2>
+
+    <form>
+      <!-- Row 1 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">First Name</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Last Name</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Middle Name</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Birthdate</label>
+          <input type="date" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Gender</label>
+          <select class="mt-1 block w-full rounded border border-gray-300 p-2">
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">LRN</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Address</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700">Contact</label>
+          <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700">Guardian</label>
+        <input type="text" class="mt-1 block w-full rounded border border-gray-300 p-2" />
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex justify-end space-x-2">
+        <button type="button" onclick="toggleModal()" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">Cancel</button>
+        <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700">Save</button>
+      </div>
+    </form>
+
+    <!-- Close Icon -->
+    <button onclick="toggleModal()" class="absolute top-2 right-3 text-gray-500 hover:text-gray-800 text-xl">&times;</button>
+  </div>
+</div>
+
+<script>
+  function toggleModal() {
+    document.getElementById("studentModal").classList.toggle("hidden");
+  }
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "instructor/base.html" %}
 
 {% block title %}Attendance - Instructor{% endblock %}
 
@@ -23,6 +23,7 @@
     </button>
   </div>
 
+
   <div class="overflow-x-auto">
     <table class="min-w-full table-auto border-collapse border border-gray-200">
       <thead class="bg-blue-800">
@@ -33,6 +34,7 @@
           <th class="border border-gray-300 px-4 py-2 text-center">Present</th>
           <th class="border border-gray-300 px-4 py-2 text-center">Absent</th>
           <th class="border border-gray-300 px-4 py-2 text-center">Excused</th>
+          <th class="border border-gray-300 px-4 py-2 text-center">Actions</th>
         </tr>
       </thead>
       <tbody id="studentsTableBody" class="divide-y divide-gray-200">
@@ -40,28 +42,26 @@
           <td class="border border-gray-300 px-4 py-2">1</td>
           <td onclick="showStats('Juan Dela Cruz')" class="border border-gray-300 px-4 py-2 text-blue-600 hover:underline cursor-pointer">Juan Dela Cruz</td>
           <td class="border border-gray-300 px-4 py-2">Grade 10</td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-1" value="present" /></td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-1" value="absent" /></td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-1" value="excused" /></td>
           <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-1" value="present" class="cursor-pointer" />
-          </td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-1" value="absent" class="cursor-pointer" />
-          </td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-1" value="excused" class="cursor-pointer" />
+            <button onclick="openMessageModal('Juan Dela Cruz')" title="Send Message">
+              📩
+            </button>
           </td>
         </tr>
         <tr>
           <td class="border border-gray-300 px-4 py-2">2</td>
           <td onclick="showStats('Maria Santos')" class="border border-gray-300 px-4 py-2 text-blue-600 hover:underline cursor-pointer">Maria Santos</td>
           <td class="border border-gray-300 px-4 py-2">Grade 10</td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-2" value="present" /></td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-2" value="absent" /></td>
+          <td class="border border-gray-300 px-4 py-2 text-center"><input type="radio" name="attendance-2" value="excused" /></td>
           <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-2" value="present" class="cursor-pointer" />
-          </td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-2" value="absent" class="cursor-pointer" />
-          </td>
-          <td class="border border-gray-300 px-4 py-2 text-center">
-            <input type="radio" name="attendance-2" value="excused" class="cursor-pointer" />
+            <button onclick="openMessageModal('Maria Santos')" title="Send Message">
+              📩
+            </button>
           </td>
         </tr>
       </tbody>
@@ -69,7 +69,7 @@
   </div>
 </div>
 
-<!-- Modern Modal -->
+<!-- Stats Modal -->
 <div id="statsModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
   <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 transform transition-all scale-95" id="modalBox">
     <div class="flex justify-between items-center border-b pb-3 mb-4">
@@ -84,18 +84,9 @@
     </div>
 
     <ul class="text-gray-700 space-y-3 text-base">
-      <li class="flex justify-between">
-        <span><strong>Present:</strong></span>
-        <span id="statPresent">0</span>
-      </li>
-      <li class="flex justify-between">
-        <span><strong>Absent:</strong></span>
-        <span id="statAbsent">0</span>
-      </li>
-      <li class="flex justify-between">
-        <span><strong>Excused:</strong></span>
-        <span id="statExcused">0</span>
-      </li>
+      <li class="flex justify-between"><span><strong>Present:</strong></span><span id="statPresent">0</span></li>
+      <li class="flex justify-between"><span><strong>Absent:</strong></span><span id="statAbsent">0</span></li>
+      <li class="flex justify-between"><span><strong>Excused:</strong></span><span id="statExcused">0</span></li>
     </ul>
 
     <div class="mt-6 flex justify-end">
@@ -106,6 +97,33 @@
   </div>
 </div>
 
+<!-- Message Modal -->
+<div id="messageModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 hidden">
+  <div class="bg-white rounded-xl p-6 w-full max-w-md shadow-xl scale-95 transition-all" id="messageBox">
+    <div class="flex justify-between items-center mb-4">
+      <h3 class="text-lg font-semibold text-gray-800">Send Message</h3>
+      <button onclick="closeMessageModal()" class="text-gray-500 hover:text-red-600 transition">
+        ✖
+      </button>
+    </div>
+
+    <div class="mb-4">
+      <label for="recipient" class="block text-sm font-medium text-gray-700">Recipient</label>
+      <input type="text" id="recipient" class="mt-1 w-full border border-gray-300 rounded px-3 py-2" readonly>
+    </div>
+
+    <div class="mb-4">
+      <label for="messageText" class="block text-sm font-medium text-gray-700">Message</label>
+      <textarea id="messageText" rows="4" class="mt-1 w-full border border-gray-300 rounded px-3 py-2" placeholder="Type your message..."></textarea>
+    </div>
+
+    <div class="flex justify-end">
+      <button onclick="sendMessage()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
+        Send
+      </button>
+    </div>
+  </div>
+</div>
 
 <script>
   function filterStudents() {
@@ -126,18 +144,13 @@
       "Juan Dela Cruz": { present: 18, absent: 2, excused: 1 },
       "Maria Santos": { present: 20, absent: 0, excused: 1 }
     };
-
     const studentStats = stats[name] || { present: 0, absent: 0, excused: 0 };
-
     document.getElementById('modalStudentName').textContent = name + "'s Stats";
     document.getElementById('statPresent').textContent = studentStats.present;
     document.getElementById('statAbsent').textContent = studentStats.absent;
     document.getElementById('statExcused').textContent = studentStats.excused;
-
-    const modal = document.getElementById('statsModal');
-    const box = document.getElementById('modalBox');
-    modal.classList.remove('hidden');
-    setTimeout(() => box.classList.remove('scale-95'), 10);
+    document.getElementById('statsModal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('modalBox').classList.remove('scale-95'), 10);
   }
 
   function closeModal() {
@@ -146,10 +159,29 @@
     box.classList.add('scale-95');
     setTimeout(() => modal.classList.add('hidden'), 200);
   }
+
+  function openMessageModal(name) {
+    document.getElementById('recipient').value = name;
+    document.getElementById('messageText').value = '';
+    document.getElementById('messageModal').classList.remove('hidden');
+    setTimeout(() => document.getElementById('messageBox').classList.remove('scale-95'), 10);
+  }
+
+  function closeMessageModal() {
+    document.getElementById('messageBox').classList.add('scale-95');
+    setTimeout(() => document.getElementById('messageModal').classList.add('hidden'), 200);
+  }
+
+  function sendMessage() {
+    const recipient = document.getElementById('recipient').value;
+    const message = document.getElementById('messageText').value.trim();
+    if (!message) {
+      alert("Please enter a message.");
+      return;
+    }
+    alert(`Message sent to ${recipient}: "${message}"`);
+    closeMessageModal();
+  }
 </script>
 
 {% endblock %}
-
-
-
-
